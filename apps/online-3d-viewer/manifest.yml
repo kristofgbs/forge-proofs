@@ -4,7 +4,7 @@
 # app.connect.key and the macro key are the Connect ones, so the Forge version can take over the existing
 # listing and every saved macro keeps working. The app id is replaced by `forge register`.
 app:
-  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+  id: ari:cloud:ecosystem::app/ff1d5035-bd58-48a8-a120-4b97ad0215bd
   connect:
     key: online-3d-viewer-confluence
   runtime:
