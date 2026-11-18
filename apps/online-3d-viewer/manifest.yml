@@ -19,7 +19,7 @@ modules:
       config:
         resource: config
         title: Online 3D Viewer
-        viewportSize: medium
+        viewportSize: large
         openOnInsert: true
   connectToForgeMigration:
     - key: forge-migration-declaration
