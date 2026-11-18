@@ -45,7 +45,8 @@ jobs:
       - name: Register the app the first time
         run: |
           if grep -q "app/00000000-0000-0000-0000-000000000000" manifest.yml; then
-            forge register --accept-terms "${{ inputs.app }}"
+            SPACE=$(forge developer-spaces list --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const l=Array.isArray(j)?j:(j.developerSpaces||j.spaces||[]);console.log(l[0].id||l[0].developerSpaceId)})')
+            forge register --accept-terms --developer-space-id "$SPACE" "${{ inputs.app }}"
             git config user.name "github-actions"
             git config user.email "github-actions@users.noreply.github.com"
             git add manifest.yml
