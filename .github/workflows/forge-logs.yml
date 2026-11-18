@@ -1,0 +1,27 @@
+# Prints the last function logs of one app (development environment). Started by hand.
+name: Forge logs
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "dot-diagrams or online-3d-viewer"
+        required: true
+        default: dot-diagrams
+jobs:
+  logs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/${{ inputs.app }}
+    env:
+      FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+      FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+      FORGE_DISABLE_ANALYTICS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g @forge/cli@latest
+      - run: forge logs -e development --limit 40 --since 2h || true
