@@ -11,7 +11,7 @@ async function attachments(content) {
   let path = attachmentsPath(content);
   while (path) {
     const res = await requestConfluence(path);
-    if (!res.ok) break;
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const body = await res.json();
     titles.push(...(body.results || []).map((a) => a.title));
     const next = body._links && body._links.next;
@@ -31,10 +31,18 @@ function field(form, id, input) {
 }
 
 async function start() {
+  const hint = document.getElementById('hint');
+  hint.textContent = 'Loading...';
   const ctx = await view.getContext();
   const current = (ctx.extension && ctx.extension.config) || {};
   const content = ctx.extension && ctx.extension.content;
-  const names = await attachments(content);
+  let names = [];
+  try {
+    names = await attachments(content);
+    hint.textContent = '';
+  } catch (e) {
+    hint.textContent = 'Could not list the attachments of this page (' + (e && e.message) + '). Type the file name instead.';
+  }
   const form = document.getElementById('form');
   for (const p of FILE_PARAMS) {
     const sel = document.createElement('select');
@@ -64,4 +72,6 @@ async function start() {
   });
 }
 
-start();
+start().catch((e) => {
+  document.getElementById('hint').textContent = 'Settings failed to load: ' + (e && e.message);
+});
