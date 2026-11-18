@@ -1,0 +1,28 @@
+{
+  "name": "online-3d-viewer-forge",
+  "version": "1.0.0",
+  "description": "Case study: Online 3D Viewer for Confluence moved from Connect to Forge.",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node --test test/*.test.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@forge/bridge": "^7.3.0",
+    "online-3d-viewer": "^0.16.0"
+  },
+  "devDependencies": {
+    "@atlassian/connect-to-forge": "^2.0.3",
+    "@forge/manifest": "^13.9.0",
+    "ajv": "^8.20.0",
+    "copyfiles": "^2.4.1",
+    "esbuild": "^0.28.2",
+    "js-yaml": "^5.5.0",
+    "jsdom": "^31.0.1"
+  },
+  "private": true,
+  "type": "module"
+}

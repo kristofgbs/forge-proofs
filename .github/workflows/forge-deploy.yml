@@ -1,0 +1,60 @@
+# Puts one app on the owner's Atlassian development site. Started by hand only (Actions tab >
+# "Forge deploy" > Run workflow). accept_terms = yes is the owner's acceptance of the Forge terms.
+# Needs the repository secrets FORGE_EMAIL and FORGE_API_TOKEN; they are never printed.
+name: Forge deploy
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "dot-diagrams or online-3d-viewer"
+        required: true
+        default: dot-diagrams
+      site:
+        description: "Development site, for example havenapps-test.atlassian.net"
+        required: true
+      accept_terms:
+        description: "Type yes to accept the Forge terms"
+        required: true
+        default: "no"
+permissions:
+  contents: write
+concurrency: forge-deploy
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: apps/${{ inputs.app }}
+    env:
+      FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+      FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+      FORGE_DISABLE_ANALYTICS: "1"
+    steps:
+      - name: Stop unless the terms were accepted
+        if: inputs.accept_terms != 'yes'
+        working-directory: .
+        run: echo "accept_terms must be yes" && exit 1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm test
+      - run: npm install -g @forge/cli@latest
+      - name: Register the app the first time
+        run: |
+          if grep -q "app/00000000-0000-0000-0000-000000000000" manifest.yml; then
+            forge register --accept-terms "${{ inputs.app }}"
+            git config user.name "github-actions"
+            git config user.email "github-actions@users.noreply.github.com"
+            git add manifest.yml
+            git commit -m "Register ${{ inputs.app }} on Forge"
+            git push
+          fi
+      - run: forge lint
+      - run: forge deploy --non-interactive -e development
+      - name: Install or upgrade on the site
+        run: |
+          forge install --non-interactive --confirm-scopes -e development --site "${{ inputs.site }}" --product confluence \
+            || forge install --non-interactive --confirm-scopes -e development --site "${{ inputs.site }}" --product confluence --upgrade

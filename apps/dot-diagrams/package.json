@@ -1,0 +1,23 @@
+{
+  "name": "dot-diagrams",
+  "version": "1.0.0",
+  "description": "Proof app: a Confluence macro on Forge that draws Graphviz DOT diagrams.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@forge/bridge": "^7.3.0",
+    "@forge/react": "^12.5.0",
+    "@forge/resolver": "^2.0.2",
+    "@viz-js/viz": "^3.31.0",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@forge/manifest": "^13.9.0",
+    "ajv": "^8.20.0",
+    "js-yaml": "^5.5.0"
+  },
+  "private": true,
+  "type": "module"
+}

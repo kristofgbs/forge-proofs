@@ -1,0 +1,37 @@
+# Online 3D Viewer for Confluence, moved from Connect to Forge (case study).
+# Original: https://github.com/kovacsv/Online3DViewerConfluence (MIT, Viktor Kovacs). The Connect app was a
+# static site on GitHub Pages with one dynamic macro; here the same macro runs fully on Atlassian.
+# app.connect.key and the macro key are the Connect ones, so the Forge version can take over the existing
+# listing and every saved macro keeps working. The app id is replaced by `forge register`.
+app:
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
+  connect:
+    key: online-3d-viewer-confluence
+  runtime:
+    name: nodejs22.x
+modules:
+  macro:
+    - key: online-3d-viewer-confluence-macro
+      resource: viewer
+      title: Online 3D Viewer for Confluence
+      description: Online 3D Viewer
+      layout: block
+      config:
+        resource: config
+        title: Online 3D Viewer
+        viewportSize: medium
+        openOnInsert: true
+  connectToForgeMigration:
+    - key: forge-migration-declaration
+      migrationGuideUrl: https://github.com/kovacsv/Online3DViewerConfluence
+      willMigrateToForgeBeforeEOS: "YES"
+resources:
+  - key: viewer
+    path: static/viewer
+  - key: config
+    path: static/config
+permissions:
+  scopes:
+    - read:page:confluence
+    - read:attachment:confluence
+    - readonly:content.attachment:confluence

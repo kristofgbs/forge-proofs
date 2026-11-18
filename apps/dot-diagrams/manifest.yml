@@ -1,0 +1,23 @@
+# Proof app: a Confluence macro that draws a Graphviz DOT diagram, fully on Forge (no server of our own).
+# It shows the target state of a Connect-to-Forge move for a simple macro app. The app id is replaced by
+# `forge register` on the first deploy.
+modules:
+  macro:
+    - key: dot-diagram
+      resource: main
+      render: native
+      resolver:
+        function: resolver
+      title: DOT diagram
+      description: Draw a diagram from Graphviz DOT text.
+      config: true
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs22.x
+  id: ari:cloud:ecosystem::app/00000000-0000-0000-0000-000000000000
