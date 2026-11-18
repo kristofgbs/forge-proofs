@@ -8,7 +8,7 @@ released in September 2025: a static site on GitHub Pages with one dynamic macro
 **What we did (18 November 2026, one working session).**
 1. Ran Atlassian's converter and checks on the published descriptor.
 2. Rebuilt the macro as a Forge Custom UI macro with the same app key and macro key, designed so the
-   listing and the macros already saved on customers' pages carry over (to be proven on a real site).
+   listing and the macros already saved on customers' pages carry over.
 3. Replaced the Connect calls (`AP.context`, `AP.request` with binary attachments) with `@forge/bridge`
    (`view.getContext`, `requestConfluence`).
 4. Replaced the Connect macro editor (nine declared parameters) with a small settings page that lists the
@@ -30,7 +30,11 @@ texture extension. Blog posts now work as well as pages.
 media service, read as a blob) is the step most likely to need a change; the fallback is a small Forge
 function that downloads as the user.
 
-**Not yet verified.** It has not run inside a real Confluence site. That needs a deploy to a development
-site (the Forge deploy workflow of this repository). Until then this case is UNVERIFIED and is not shown to anyone as finished.
+**Verified on a real site (18 November 2026).** Deployed to a Confluence Cloud development site with
+GitHub Actions. On a page with an attached STL file the macro downloads the attachment through
+`requestConfluence` and draws the model (`docs/test-site-2026-11-18.jpg`). Three fixes were needed on the
+way: Save and messages moved to the top of the settings dialog, and a larger dialog. Not yet shown in
+practice: an existing Connect macro taking over after a real listing upgrade (that needs the original
+listing), and picking a file in the settings dialog by hand (driven only by automation so far).
 
 **Use.** Offered to the original author as a free pull request.

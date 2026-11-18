@@ -11,4 +11,6 @@ support ends on 31 January 2027.
 Each app: `npm ci && npm test`. Deploy to a development site with the "Forge deploy" workflow
 (Actions tab), which needs the repository secrets `FORGE_EMAIL` and `FORGE_API_TOKEN`.
 
+Both apps run on a Confluence Cloud development site: `docs/test-site-2026-11-18.jpg`.
+
 MIT licence. The 3D viewer keeps its original licence (`apps/online-3d-viewer/ORIGINAL-LICENSE.md`).
